@@ -181,28 +181,37 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 
 
 	const getSeatStyle = (seat: Seat) => {
+		const baseStyle = {
+			width: '36px',
+			height: '36px',
+			borderRadius: '100%'
+		};
+
 		if (seat.status === 'sold') {
-			// Sold seat styling
+			// Sold seat styling - purple theme
 			return {
-				background: '#f7d7d7',
-				border: '2px solid #aa0519',
-				color: '#aa0519',
-				opacity: 0.3
+				...baseStyle,
+				background: 'rgb(137, 78, 255)',
+				border: '2px solid rgb(137, 78, 255)',
+				color: '#fff',
+				opacity: 1
 			};
 		} else if (selectedSeats.includes(seat.id)) {
-			// Selected seat styling
+			// Selected seat styling - orange theme
 			return {
-				background: '#075e54',
-				border: '2px solid #075e54',
+				...baseStyle,
+				background: '#ff8000',
+				border: '2px solid #ff8000',
 				color: '#fff',
 				opacity: 1
 			};
 		} else {
-			// Available seat styling
+			// Available seat styling - blue theme
 			return {
-				background: '#dcf8c6',
-				border: '2px solid #00c307',
-				color: '#00c307',
+				...baseStyle,
+				background: 'rgb(60, 158, 248)',
+				border: '2px solid rgb(60, 158, 248)',
+				color: '#fff',
 				opacity: 1
 			};
 		}
@@ -497,7 +506,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 																	return (
 																		<div
 																			key={seat.id}
-																			className={`w-10 h-10 flex-shrink-0 relative rounded-md flex items-center justify-center text-xs font-semibold transition-all ${
+																			className={`flex-shrink-0 relative flex items-center justify-center text-xs font-semibold transition-all ${
 																				seat.status === 'sold'
 																					? 'cursor-not-allowed'
 																					: 'cursor-pointer hover:scale-105'
@@ -565,7 +574,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 																	return (
 																		<div
 																			key={seat.id}
-																			className={`w-10 h-10 flex-shrink-0 relative rounded-md flex items-center justify-center text-xs font-semibold transition-all ${
+																			className={`flex-shrink-0 relative flex items-center justify-center text-xs font-semibold transition-all ${
 																				seat.status === 'sold'
 																					? 'cursor-not-allowed'
 																					: 'cursor-pointer hover:scale-105'
@@ -633,7 +642,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 																	return (
 																		<div
 																			key={seat.id}
-																			className={`w-10 h-10 flex-shrink-0 relative rounded-md flex items-center justify-center text-xs font-semibold transition-all ${
+																			className={`flex-shrink-0 relative flex items-center justify-center text-xs font-semibold transition-all ${
 																				seat.status === 'sold'
 																					? 'cursor-not-allowed'
 																					: 'cursor-pointer hover:scale-105'
