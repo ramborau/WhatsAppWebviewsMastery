@@ -181,38 +181,63 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 
 
 	const getSeatStyle = (seat: Seat) => {
+		if (seat.status === 'sold') {
+			// Sold seat styling
+			return {
+				background: '#f7d7d7',
+				border: '2px solid #aa0519',
+				color: '#aa0519',
+				opacity: 0.3
+			};
+		} else if (selectedSeats.includes(seat.id)) {
+			// Selected seat styling
+			return {
+				background: '#075e54',
+				border: '2px solid #075e54',
+				color: '#fff',
+				opacity: 1
+			};
+		} else {
+			// Available seat styling
+			return {
+				background: '#dcf8c6',
+				border: '2px solid #00c307',
+				color: '#00c307',
+				opacity: 1
+			};
+		}
+	};
+
+	const getRowLabelStyle = (section: string) => {
 		const baseStyle = {
 			width: '36px',
 			height: '36px',
 			borderRadius: '100%'
 		};
 
-		if (seat.status === 'sold') {
-			// Sold seat styling - purple theme
+		if (section === 'prime') {
+			// Purple theme for Prime section
 			return {
 				...baseStyle,
 				background: 'rgb(137, 78, 255)',
 				border: '2px solid rgb(137, 78, 255)',
-				color: '#fff',
-				opacity: 1
+				color: '#fff'
 			};
-		} else if (selectedSeats.includes(seat.id)) {
-			// Selected seat styling - orange theme
-			return {
-				...baseStyle,
-				background: '#ff8000',
-				border: '2px solid #ff8000',
-				color: '#fff',
-				opacity: 1
-			};
-		} else {
-			// Available seat styling - blue theme
+		} else if (section === 'classic-plus') {
+			// Blue theme for Classic Plus section
 			return {
 				...baseStyle,
 				background: 'rgb(60, 158, 248)',
 				border: '2px solid rgb(60, 158, 248)',
-				color: '#fff',
-				opacity: 1
+				color: '#fff'
+			};
+		} else {
+			// Orange theme for Classic section
+			return {
+				...baseStyle,
+				background: '#ff8000',
+				border: '2px solid #ff8000',
+				color: '#fff'
 			};
 		}
 	};
@@ -478,12 +503,11 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 													return (
 														<div key={row} className="flex items-center gap-2">
 															<span
-																className="w-8 h-8 text-center text-sm font-bold rounded sticky left-[7px] z-10 flex items-center justify-center"
-																style={{
-																	backgroundColor: zoneInfo.background,
-																	border: `2px solid ${zoneInfo.borderColor}`,
-																	color: zoneInfo.textColor,
-																}}
+																className="text-center text-sm font-bold sticky left-[7px] z-10 flex items-center justify-center"
+																style={getRowLabelStyle(
+																	['A', 'B', 'C', 'D', 'E'].includes(row) ? 'prime' :
+																	['F', 'G', 'H'].includes(row) ? 'classic-plus' : 'classic'
+																)}
 															>
 																{row}
 															</span>
@@ -506,7 +530,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 																	return (
 																		<div
 																			key={seat.id}
-																			className={`flex-shrink-0 relative flex items-center justify-center text-xs font-semibold transition-all ${
+																			className={`w-10 h-10 flex-shrink-0 relative rounded-md flex items-center justify-center text-xs font-semibold transition-all ${
 																				seat.status === 'sold'
 																					? 'cursor-not-allowed'
 																					: 'cursor-pointer hover:scale-105'
@@ -546,12 +570,11 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 													return (
 														<div key={row} className="flex items-center gap-2">
 															<span
-																className="w-8 h-8 text-center text-sm font-bold rounded sticky left-[7px] z-10 flex items-center justify-center"
-																style={{
-																	backgroundColor: zoneInfo.background,
-																	border: `2px solid ${zoneInfo.borderColor}`,
-																	color: zoneInfo.textColor,
-																}}
+																className="text-center text-sm font-bold sticky left-[7px] z-10 flex items-center justify-center"
+																style={getRowLabelStyle(
+																	['A', 'B', 'C', 'D', 'E'].includes(row) ? 'prime' :
+																	['F', 'G', 'H'].includes(row) ? 'classic-plus' : 'classic'
+																)}
 															>
 																{row}
 															</span>
@@ -574,7 +597,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 																	return (
 																		<div
 																			key={seat.id}
-																			className={`flex-shrink-0 relative flex items-center justify-center text-xs font-semibold transition-all ${
+																			className={`w-10 h-10 flex-shrink-0 relative rounded-md flex items-center justify-center text-xs font-semibold transition-all ${
 																				seat.status === 'sold'
 																					? 'cursor-not-allowed'
 																					: 'cursor-pointer hover:scale-105'
@@ -614,12 +637,11 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 													return (
 														<div key={row} className="flex items-center gap-2">
 															<span
-																className="w-8 h-8 text-center text-sm font-bold rounded sticky left-[7px] z-10 flex items-center justify-center"
-																style={{
-																	backgroundColor: zoneInfo.background,
-																	border: `2px solid ${zoneInfo.borderColor}`,
-																	color: zoneInfo.textColor,
-																}}
+																className="text-center text-sm font-bold sticky left-[7px] z-10 flex items-center justify-center"
+																style={getRowLabelStyle(
+																	['A', 'B', 'C', 'D', 'E'].includes(row) ? 'prime' :
+																	['F', 'G', 'H'].includes(row) ? 'classic-plus' : 'classic'
+																)}
 															>
 																{row}
 															</span>
@@ -642,7 +664,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 																	return (
 																		<div
 																			key={seat.id}
-																			className={`flex-shrink-0 relative flex items-center justify-center text-xs font-semibold transition-all ${
+																			className={`w-10 h-10 flex-shrink-0 relative rounded-md flex items-center justify-center text-xs font-semibold transition-all ${
 																				seat.status === 'sold'
 																					? 'cursor-not-allowed'
 																					: 'cursor-pointer hover:scale-105'
