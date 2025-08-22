@@ -179,54 +179,32 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 		return adjacent.slice(0, needed);
 	};
 
-	const getSeatColor = (seat: Seat) => {
-		if (selectedSeats.includes(seat.id)) return 'text-white';
-		if (seat.status === 'sold') return 'text-gray-400 cursor-not-allowed';
-		if (seat.type === 'prime') return 'text-booking-primary';
-		if (seat.type === 'classic-plus') return 'text-booking-primary/80';
-		return 'text-booking-primary/60';
-	};
 
-	const getSeatSVG = (seat: Seat) => {
-		const textColor = selectedSeats.includes(seat.id) ? '#ffffff' : seat.status === 'sold' ? '#aa0519' : '#075e54';
-
-		// Based on text color, determine SVG styling
-		if (textColor === '#aa0519') {
-			// When text is #aa0519 - use sold seat styling
-			return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" class="w-full h-full" transform="rotate(180)">
-        <defs>
-          <style>
-            .st0 {
-              fill: #f7d7d7;
-              opacity: .28;
-              stroke: #aa0519;
-              stroke-miterlimit: 10;
-              stroke-width: 21px;
-            }
-          </style>
-        </defs>
-        <path class="st0" d="M90.77,243.3c21.55-2.58,77.73-2.7,97.42,3.77,24.84,8.16,43.54,31.2,46.99,57.12,5.15,111.05-7.12,228.64-.17,338.93,2.72,43.15,23.03,67.71,67.24,70.95h462.2c34.66-2.54,60.11-20.08,65.24-55.92l-.05-344.48c6.54-76.47,81-75.9,141.12-70.87,37.17,3.11,65.08,27.79,69.22,65.19v458.13c-7.42,83.63-76.57,150.7-160.11,157.92l-689.35.1c-85.46-5.46-156-72.59-163.8-158.02l.28-461.64c5.84-33.05,30.15-57.16,63.76-61.18Z"/>
-        <path class="st0" d="M762.93,647.29c-5.78,6.02-18.46,9.84-26.77,10.6h-405.59c-15.24-1.85-28.28-7.39-34.08-22.4l-1.64-347.21c5.61-42.64,40.59-77.52,83.9-80.56,101.1-7.1,210.48,5.45,312.44.1,42.53,5.42,76.19,39.53,80.68,82.11v335.56c-.19,7.26-3.96,16.6-8.94,21.79Z"/>
-        <text x="530" y="630" text-anchor="middle" font-family="Arial, sans-serif" font-size="380" font-weight="bold" fill="${textColor}" transform="rotate(180 530 630)">${seat.number}</text>
-      </svg>`;
+	const getSeatStyle = (seat: Seat) => {
+		if (seat.status === 'sold') {
+			// Sold seat styling
+			return {
+				background: '#f7d7d7',
+				border: '2px solid #aa0519',
+				color: '#aa0519',
+				opacity: 0.3
+			};
+		} else if (selectedSeats.includes(seat.id)) {
+			// Selected seat styling
+			return {
+				background: '#075e54',
+				border: '2px solid #075e54',
+				color: '#fff',
+				opacity: 1
+			};
 		} else {
-			// For all other text colors - use available/selected seat styling
-			return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" class="w-full h-full" transform="rotate(180)">
-        <defs>
-          <style>
-            .st0 {
-              fill: #dcf8c6;
-              stroke: #00c307;
-              stroke-miterlimit: 10;
-              stroke-width: 21px;
-              opacity: 1;
-            }
-          </style>
-        </defs>
-        <path class="st0" d="M90.77,243.3c21.55-2.58,77.73-2.7,97.42,3.77,24.84,8.16,43.54,31.2,46.99,57.12,5.15,111.05-7.12,228.64-.17,338.93,2.72,43.15,23.03,67.71,67.24,70.95h462.2c34.66-2.54,60.11-20.08,65.24-55.92l-.05-344.48c6.54-76.47,81-75.9,141.12-70.87,37.17,3.11,65.08,27.79,69.22,65.19v458.13c-7.42,83.63-76.57,150.7-160.11,157.92l-689.35.1c-85.46-5.46-156-72.59-163.8-158.02l.28-461.64c5.84-33.05,30.15-57.16,63.76-61.18Z"/>
-        <path class="st0" d="M762.93,647.29c-5.78,6.02-18.46,9.84-26.77,10.6h-405.59c-15.24-1.85-28.28-7.39-34.08-22.4l-1.64-347.21c5.61-42.64,40.59-77.52,83.9-80.56,101.1-7.1,210.48,5.45,312.44.1,42.53,5.42,76.19,39.53,80.68,82.11v335.56c-.19,7.26-3.96,16.6-8.94,21.79Z"/>
-        <text x="530" y="630" text-anchor="middle" font-family="Arial, sans-serif" font-size="380" font-weight="bold" fill="${textColor}" transform="rotate(180 530 630)">${seat.number}</text>
-      </svg>`;
+			// Available seat styling
+			return {
+				background: '#dcf8c6',
+				border: '2px solid #00c307',
+				color: '#00c307',
+				opacity: 1
+			};
 		}
 	};
 
@@ -519,18 +497,16 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 																	return (
 																		<div
 																			key={seat.id}
-																			className={`w-10 h-10 flex-shrink-0 relative ${
+																			className={`w-10 h-10 flex-shrink-0 relative rounded-md flex items-center justify-center text-xs font-semibold transition-all ${
 																				seat.status === 'sold'
-																					? 'cursor-not-allowed seat-sold'
-																					: selectedSeats.includes(seat.id)
-																					? 'cursor-pointer transition-all hover:scale-105 seat-selected'
-																					: 'cursor-pointer transition-all hover:scale-105 seat-available'
+																					? 'cursor-not-allowed'
+																					: 'cursor-pointer hover:scale-105'
 																			}`}
+																			style={getSeatStyle(seat)}
 																			onClick={() => handleSeatClick(seat.id)}
-																			dangerouslySetInnerHTML={{
-																				__html: getSeatSVG(seat),
-																			}}
-																		></div>
+																		>
+																			{seat.row}{seat.number}
+																		</div>
 																	);
 																})}
 															</div>
@@ -589,18 +565,16 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 																	return (
 																		<div
 																			key={seat.id}
-																			className={`w-10 h-10 flex-shrink-0 relative ${
+																			className={`w-10 h-10 flex-shrink-0 relative rounded-md flex items-center justify-center text-xs font-semibold transition-all ${
 																				seat.status === 'sold'
-																					? 'cursor-not-allowed seat-sold'
-																					: selectedSeats.includes(seat.id)
-																					? 'cursor-pointer transition-all hover:scale-105 seat-selected'
-																					: 'cursor-pointer transition-all hover:scale-105 seat-available'
+																					? 'cursor-not-allowed'
+																					: 'cursor-pointer hover:scale-105'
 																			}`}
+																			style={getSeatStyle(seat)}
 																			onClick={() => handleSeatClick(seat.id)}
-																			dangerouslySetInnerHTML={{
-																				__html: getSeatSVG(seat),
-																			}}
-																		></div>
+																		>
+																			{seat.row}{seat.number}
+																		</div>
 																	);
 																})}
 															</div>
@@ -659,18 +633,16 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 																	return (
 																		<div
 																			key={seat.id}
-																			className={`w-10 h-10 flex-shrink-0 relative ${
+																			className={`w-10 h-10 flex-shrink-0 relative rounded-md flex items-center justify-center text-xs font-semibold transition-all ${
 																				seat.status === 'sold'
-																					? 'cursor-not-allowed seat-sold'
-																					: selectedSeats.includes(seat.id)
-																					? 'cursor-pointer transition-all hover:scale-105 seat-selected'
-																					: 'cursor-pointer transition-all hover:scale-105 seat-available'
+																					? 'cursor-not-allowed'
+																					: 'cursor-pointer hover:scale-105'
 																			}`}
+																			style={getSeatStyle(seat)}
 																			onClick={() => handleSeatClick(seat.id)}
-																			dangerouslySetInnerHTML={{
-																				__html: getSeatSVG(seat),
-																			}}
-																		></div>
+																		>
+																			{seat.row}{seat.number}
+																		</div>
 																	);
 																})}
 															</div>
