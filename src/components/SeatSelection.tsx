@@ -100,9 +100,9 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 			return {
 				type: 'classic',
 				price: 200,
-				background: '#E9F8EF', // Full opacity
-				borderColor: '#2acb6a',
-				textColor: '#2acb6a',
+				background: '#fff1e2', // Light orange
+				borderColor: '#ff8000',
+				textColor: '#ff8000',
 			};
 		}
 	};
@@ -126,8 +126,18 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 					return prev.filter((id) => id !== seatId);
 				}
 
+				// If user has already selected required seats, replace them with new selection
 				if (prev.length >= localRequiredSeats) {
-					return prev;
+					// Start fresh with the new selected seat
+					const newSelected = [seatId];
+					
+					// Auto-select adjacent seats if possible
+					if (newSelected.length < localRequiredSeats) {
+						const adjacentSeats = findAdjacentSeats(seatId, localRequiredSeats - newSelected.length);
+						return [...newSelected, ...adjacentSeats];
+					}
+					
+					return newSelected;
 				}
 
 				const newSelected = [...prev, seatId];
@@ -333,7 +343,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 										borderColor: '#3dbaf8',
 										bgColor: '#f3f9ff',
 									},
-									{ type: 'CLASSIC', price: '₹200', borderColor: '#36d882', bgColor: '#e4ffef' },
+									{ type: 'CLASSIC', price: '₹200', borderColor: '#ff8000', bgColor: '#fff1e2' },
 								].map((category) => (
 									<div
 										key={category.type}
@@ -501,7 +511,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 												.map(([row, rowSeats]) => {
 													const zoneInfo = getZoneInfo(row);
 													return (
-														<div key={row} className="flex items-center gap-2">
+														<div key={row} className="flex items-center gap-2" style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 															<span
 																className="text-center text-sm font-bold sticky left-[7px] z-10 flex items-center justify-center"
 																style={getRowLabelStyle(
@@ -511,7 +521,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 															>
 																{row}
 															</span>
-															<div className="flex gap-1 justify-center min-w-max">
+															<div className="flex gap-1 justify-center min-w-max" style={{gap: '10px'}}>
 																{Array.from({ length: 16 }, (_, index) => {
 																	const seatNumber = index + 1;
 																	const seat = rowSeats.find(
@@ -538,7 +548,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 																			style={getSeatStyle(seat)}
 																			onClick={() => handleSeatClick(seat.id)}
 																		>
-																			{seat.row}{seat.number}
+																			{seat.number}
 																		</div>
 																	);
 																})}
@@ -568,7 +578,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 												.map(([row, rowSeats]) => {
 													const zoneInfo = getZoneInfo(row);
 													return (
-														<div key={row} className="flex items-center gap-2">
+														<div key={row} className="flex items-center gap-2" style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 															<span
 																className="text-center text-sm font-bold sticky left-[7px] z-10 flex items-center justify-center"
 																style={getRowLabelStyle(
@@ -578,7 +588,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 															>
 																{row}
 															</span>
-															<div className="flex gap-1 justify-center min-w-max">
+															<div className="flex gap-1 justify-center min-w-max" style={{gap: '10px'}}>
 																{Array.from({ length: 16 }, (_, index) => {
 																	const seatNumber = index + 1;
 																	const seat = rowSeats.find(
@@ -605,7 +615,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 																			style={getSeatStyle(seat)}
 																			onClick={() => handleSeatClick(seat.id)}
 																		>
-																			{seat.row}{seat.number}
+																			{seat.number}
 																		</div>
 																	);
 																})}
@@ -623,7 +633,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 									<div className="mb-4">
 										{/* Classic Header */}
 										<div className="py-2 px-4 text-center">
-											<span className="text-lg font-bold" style={{ color: '#2acb6a' }}>
+											<span className="text-lg font-bold" style={{ color: '#ff8000' }}>
 												CLASSIC ₹200
 											</span>
 										</div>
@@ -635,7 +645,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 												.map(([row, rowSeats]) => {
 													const zoneInfo = getZoneInfo(row);
 													return (
-														<div key={row} className="flex items-center gap-2">
+														<div key={row} className="flex items-center gap-2" style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 															<span
 																className="text-center text-sm font-bold sticky left-[7px] z-10 flex items-center justify-center"
 																style={getRowLabelStyle(
@@ -645,7 +655,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 															>
 																{row}
 															</span>
-															<div className="flex gap-1 justify-center min-w-max">
+															<div className="flex gap-1 justify-center min-w-max" style={{gap: '10px'}}>
 																{Array.from({ length: 16 }, (_, index) => {
 																	const seatNumber = index + 1;
 																	const seat = rowSeats.find(
@@ -672,7 +682,7 @@ export function SeatSelection({ onBack, onContinue, requiredSeats, onSeatCountCh
 																			style={getSeatStyle(seat)}
 																			onClick={() => handleSeatClick(seat.id)}
 																		>
-																			{seat.row}{seat.number}
+																			{seat.number}
 																		</div>
 																	);
 																})}

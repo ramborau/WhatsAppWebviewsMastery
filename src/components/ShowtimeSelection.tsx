@@ -113,7 +113,7 @@ export function ShowtimeSelection({ onBack, onSelectTime }: ShowtimeSelectionPro
 							<Button
 								key={index}
 								variant="outline"
-								className={`h-auto p-3 transition-colors ${
+								className={`h-auto p-3 transition-all duration-150 ease-out ${
 									selectedTime === show.time
 										? 'bg-booking-primary text-white border-booking-primary'
 										: 'border-booking-primary/30 hover:bg-booking-light hover:border-booking-primary'
@@ -122,7 +122,7 @@ export function ShowtimeSelection({ onBack, onSelectTime }: ShowtimeSelectionPro
 							>
 								<div className="text-center">
 									<div
-										className={`text-sm font-semibold ${
+										className={`text-sm font-semibold transition-colors duration-150 ease-out ${
 											selectedTime === show.time ? 'text-white' : 'text-booking-dark'
 										}`}
 									>
@@ -130,7 +130,7 @@ export function ShowtimeSelection({ onBack, onSelectTime }: ShowtimeSelectionPro
 									</div>
 									{show.label && (
 										<div
-											className={`text-xs mt-1 ${
+											className={`text-xs mt-1 transition-colors duration-150 ease-out ${
 												selectedTime === show.time ? 'text-white/80' : 'text-gray-500'
 											}`}
 										>

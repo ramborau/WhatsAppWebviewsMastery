@@ -121,8 +121,8 @@ export function PaymentBreakdown({
 			console.error('Webhook error:', error);
 		}
 
-		// Close browser window
-		window.close();
+		// Redirect to WhatsApp
+		window.location.href = 'https://wa.me/918390974974';
 	};
 
 	// Countdown effect for WhatsApp popup
